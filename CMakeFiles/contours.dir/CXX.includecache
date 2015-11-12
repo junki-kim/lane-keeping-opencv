@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/sabi/workspace/lane-detection-master/LaneDetect.cpp
+opencv2/highgui/highgui.hpp
+/home/sabi/workspace/lane-detection-master/opencv2/highgui/highgui.hpp
+opencv2/objdetect/objdetect.hpp
+-
+opencv2/imgproc/imgproc.hpp
+-
+iostream
+-
+vector
+-
+stdio.h
+-
+linefinder.h
+/home/sabi/workspace/lane-detection-master/linefinder.h
+
+/home/sabi/workspace/lane-detection-master/linefinder.h
+opencv2/core/core.hpp
+-
+opencv2/imgproc/imgproc.hpp
+-
+
