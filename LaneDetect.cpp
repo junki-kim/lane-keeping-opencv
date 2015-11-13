@@ -34,30 +34,15 @@ int main(int argc, char* argv[]) {
 	    Mat imgROI;//
 	    GaussianBlur(gray(roi),imgROI,Size(3,3),0);
 	    // Display the image
-	   /* if(showSteps){
-		    imshow("Original Image",imgROI);
-	    }*/
 
 	   // Canny algorithm
 	    Mat contours;
-	    Canny(imgROI,contours,80,130);
+	    Canny(imgROI,contours,80,100);
 	    imshow("display",contours);
 	    waitKey(1);
-//	    Mat contoursInv;
-//	    threshold(contours,contoursInv,128,255,THRESH_BINARY_INV);
-	       // Display Canny image
-	   /* if(showSteps){
-		    namedWindow("Contours");
-		    imshow("Contours1",contoursInv);
-		    imwrite("contours.bmp", contoursInv);
-	    }*/
-	       // Create LineFinder instance
-
-	       // Set probabilistic Hough parameters
-
 	       // Detect lines
-	ld.setLineLengthAndGap(60,10);
-	ld.setMinVote(4);
+	    ld.setLineLengthAndGap(60,10);
+	    ld.setMinVote(4);
 	    ld.findLines(contours);
 	    std::vector<Vec4i> li= ld.findLines(contours);
 
@@ -65,23 +50,12 @@ int main(int argc, char* argv[]) {
 	    ld.laneFilter();
 	    
 	    ld.calcIntersectP();
-//	    Mat leftLane(imgROI.size(),CV_8U,Scalar(0));
-//	    Mat rightLane(imgROI.size(),CV_8U,Scalar(0));
-//	    Mat houghP(imgROI.size(),CV_8U,Scalar(0));
-//	    ld.setShift(0);
-//	    ld.drawLeftLane(leftLane);
-//	    ld.drawRightLane(rightLane);
-//	    std::cout << "First Hough" << "\n";
+	    //this intersection has the vanishing point
+	    //intersection has (x,y) coordinates access it like following
+	    //intersection.x
+	    //intersection.y
+	    Point intersection=ld.getIntersectP();
 
-//	    if(showSteps){
-//		    namedWindow("Detected Lines with HoughP");
-//		    imshow("leftLane", leftLane);
-//		    imshow("rightLane", rightLane);
-//	    }
-
-	    // Set probabilistic Hough parameters
-//	    ld.setLineLengthAndGap(5,2);
-//	    ld.setMinVote(1);
 	    ld.setShift(image.cols/3);
 	    ld.drawLines(image);
 	    
