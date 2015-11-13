@@ -79,7 +79,6 @@ class LineFinder {
 
 	  // Draw the detected lines on an image
 	  void drawDetectedLines(cv::Mat &image, cv::Scalar color=cv::Scalar(255)) {
-		
 	  // Draw the lines
 	  std::vector<cv::Vec4i>::const_iterator it2= lines.begin();
 	  while (it2!=lines.end()) {
@@ -89,6 +88,20 @@ class LineFinder {
 		std::cout << " HoughP line: ("<< pt1 <<"," << pt2 << ")\n"; 
 	      ++it2;	
 	  }
+	}
+	  void drawLines(cv::Mat &image, cv::Scalar color=cv::Scalar(255)) {
+	  // Draw the lines
+	     std::vector<cv::Vec4i>::const_iterator it2= leftLane.begin();
+	     circle(image,intersectP,8,Scalar(0));
+	     Point pt1((*it2)[0],(*it2)[1]+shift);        
+	     Point pt2((*it2)[2],(*it2)[3]+shift);
+	     line( image, pt1, pt2, color, 6 );
+	     
+	     it2= rightLane.begin();
+	     Point pt3((*it2)[0],(*it2)[1]+shift);        
+	     Point pt4((*it2)[2],(*it2)[3]+shift);
+	     line( image, pt3, pt4, color, 6 );
+
 	}
 	  void drawLeftLane(cv::Mat &image, cv::Scalar color=cv::Scalar(255)) {
 		
@@ -175,17 +188,21 @@ class LineFinder {
     {
 	std::vector<cv::Vec4i>::iterator iter=leftLane.begin();
 	int numOfLane=leftLane.size();
+	double dx=0.0;
+	double dy=0.0;
+	double gradient=0.0;
+	int count=0;
+
 	if(numOfLane > 0){
-	    int count=0;
-	    double dx=1.0*(*iter)[2]-(*iter)[0];
-	    double dy=1.0*(*iter)[3]-(*iter)[1];
+	    count=0;
+	    dx=1.0*(*iter)[2]-(*iter)[0];
+	    dy=1.0*(*iter)[3]-(*iter)[1];
 	    dx=(dx==0)? 1.0:dx;
-	    double gradient=dy/dx;
+	    gradient=dy/dx;
 	    iter++;
 	    numOfLane--;
 	    while(count<numOfLane)
 	    {
-		cout<<"gradient: "<<gradient<<endl;
 		dx=1.0*(*iter)[2]-(*iter)[0];
 		dy=1.0*(*iter)[3]-(*iter)[1];
 		dx=(dx==0)? 1.0 : dx;
@@ -213,8 +230,6 @@ class LineFinder {
 	    count=0;
 	    while(count<numOfLane)
 	    {
-		
-		cout<<"gradient: "<<gradient<<endl;
 		dx=1.0*(*iter)[2]-(*iter)[0];
 		dy=1.0*(*iter)[3]-(*iter)[1];
 		dx=(dx==0)? 1.0 : dx;
@@ -229,6 +244,7 @@ class LineFinder {
 	    }
 	}
     }
+
     Point getIntersectP()
     {
 	return intersectP;
