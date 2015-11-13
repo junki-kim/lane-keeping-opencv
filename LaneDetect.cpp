@@ -108,8 +108,9 @@ int main(int argc, char* argv[]) {
 
 	ld.processSide();
 	ld.laneFilter();
-	waitKey(0);
+	
 	ld.calcIntersectP();
+	int temp=0;
 	Mat leftLane(imgROI.size(),CV_8U,Scalar(0));
 	Mat rightLane(imgROI.size(),CV_8U,Scalar(0));
 	Mat houghP(imgROI.size(),CV_8U,Scalar(0));
@@ -129,17 +130,6 @@ int main(int argc, char* argv[]) {
 
 	   // bitwise AND of the two hough images
 	//bitwise_and(houghP,hough,houghP);
-	Mat houghPinv(imgROI.size(),CV_8U,Scalar(0));
-	Mat dst(imgROI.size(),CV_8U,Scalar(0));
-	threshold(houghP,houghPinv,150,255,THRESH_BINARY_INV); // threshold and invert to black lines
-
-	if(showSteps){
-		namedWindow("Detected Lines with Bitwise");
-		imshow("Detected Lines with Bitwise", houghPinv);
-	}
-
-	Canny(houghPinv,contours,100,350);
-	li= ld.findLines(contours);
 
 		   // Set probabilistic Hough parameters
 	ld.setLineLengthAndGap(5,2);

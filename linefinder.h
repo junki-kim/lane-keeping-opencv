@@ -174,59 +174,55 @@ class LineFinder {
     void laneFilter()
     {
 	std::vector<cv::Vec4i>::iterator iter=leftLane.begin();
+	int numOfLane=leftLane.size()-1;
+	int count=0;
 	double dx=1.0*(*iter)[2]-(*iter)[0];
 	double dy=1.0*(*iter)[3]-(*iter)[1];
 	dx=(dx==0)? 1.0:dx;
 	double gradient=dy/dx;
 	iter++;
-	cout<<"size : "<<leftLane.size()<<endl;
-	while(iter!=leftLane.end())
+	
+	while(count<numOfLane)
 	{
+	    cout<<"gradient: "<<gradient<<endl;
 	    dx=1.0*(*iter)[2]-(*iter)[0];
 	    dy=1.0*(*iter)[3]-(*iter)[1];
-	    cout<<"("<<(*iter)[0]<<","<<(*iter)[1]<<"), ("<<(*iter)[2]<<","<<(*iter)[3]<<")"<<endl;
 	    dx=(dx==0)? 1.0 : dx;
-//	    cout<<"be current g : "<<gradient<<"<, dy/dx : "<<dy/dx<<endl;
 	    if(gradient<(dy/dx))
 	    {
 		gradient=dy/dx;
 		leftLane.erase(iter-1);
 	    }
-	    else
+	    else{
 		leftLane.erase(iter);
-//	    cout<<"af current g : "<<gradient<<"<, dy/dx : "<<dy/dx<<endl;
-	    iter++;	
+	    }
+	    count++;
 	}
-//	std::vector<cv::Vec4i>::iterator iter=leftLane.begin();
-	cout<<"left line size : "<<leftLane.size()<<endl;
+	
 	iter=rightLane.begin();
-	cout<<"size : "<<rightLane.size()<<endl;
 	dx=1.0*(*iter)[2]-(*iter)[0];
 	dy=1.0*(*iter)[3]-(*iter)[1];
 	dx=(dx==0)? 1.0:dx;
 	gradient=dy/dx;
 	iter++;
-	cin>>dx;
-	while(iter!=rightLane.end())
+	numOfLane=rightLane.size()-1;
+	count=0;
+	while(count<numOfLane)
 	{
+	    
+	    cout<<"gradient: "<<gradient<<endl;
 	    dx=1.0*(*iter)[2]-(*iter)[0];
 	    dy=1.0*(*iter)[3]-(*iter)[1];
 	    dx=(dx==0)? 1.0 : dx;
-	    cout<<"("<<(*iter)[0]<<","<<(*iter)[1]<<"), ("<<(*iter)[2]<<","<<(*iter)[3]<<")"<<endl;
-//	    cout<<"be current g : "<<gradient<<"<, dy/dx : "<<dy/dx<<endl;
-	    if(gradient<(dy/dx))
+	    if(gradient>(dy/dx))
 	    {
 		gradient=dy/dx;
 		rightLane.erase(iter-1);
 	    }
 	    else
 		rightLane.erase(iter);
-//	    cout<<"af current g : "<<gradient<<"<, dy/dx : "<<dy/dx<<endl;
-	    iter++;	
+	    count++;
 	}
-	cout<<"left lane size: "<<leftLane.size()<<endl;
-	cout<<"right lane size: "<<rightLane.size()<<endl;
-	cin>>dx;
     }
     Point getIntersectP()
     {
