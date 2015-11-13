@@ -103,8 +103,9 @@ int main(int argc, char* argv[]) {
 	ld.setMinVote(4);
 
 	   // Detect lines
-
+        ld.findLines(contours);
 	std::vector<Vec4i> li= ld.findLines(contours);
+
 	ld.processSide();
 	ld.calcIntersectP();
 	Mat leftLane(imgROI.size(),CV_8U,Scalar(0));
@@ -119,8 +120,6 @@ int main(int argc, char* argv[]) {
 	if(showSteps){
 		namedWindow("Detected Lines with HoughP");
 		//imshow("Detected Lines with HoughP", houghP);
-		imshow("leftLane", leftLane);
-		imshow("rightlane", rightLane);
 //		imwrite("houghP.bmp", houghP);
 	}
 
@@ -137,12 +136,6 @@ int main(int argc, char* argv[]) {
 
 	Canny(houghPinv,contours,100,350);
 	li= ld.findLines(contours);
-   // Display Canny image
-	if(showSteps){
-		namedWindow("Contours");
-		imshow("Contours2",contours);
-		imwrite("contours.bmp", contoursInv);
-	}
 
 		   // Set probabilistic Hough parameters
 	ld.setLineLengthAndGap(5,2);
@@ -151,13 +144,6 @@ int main(int argc, char* argv[]) {
 	ld.drawDetectedLines(image);
 	char key = (char) waitKey(0);
 		
-	std::stringstream stream;
-//	stream << "Lines Segments: " << lines.size();
-		
-	putText(image, stream.str(), Point(10,image.rows-10), 2, 0.8, Scalar(0,0,255),0);
-	imshow(window_name, image); 
-	imwrite("processed.bmp", image);
-	//lines.clear();
 }
 
 

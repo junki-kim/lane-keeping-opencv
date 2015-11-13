@@ -170,6 +170,19 @@ class LineFinder {
      }
 	
     }
+    /*laneFilter finds the lines which has smallest and biggest gradient on right and left lanes respectively.   */
+    void laneFilter()
+    {
+	std::vector<cv::Vec4i>::const_iterator left=leftLane.begin();
+	double gradient=0.0;
+	while(left!=leftLane.end())
+	{
+	
+	}
+	
+	
+	
+    }
     Point getIntersectP()
     {
 	return intersectP;
