@@ -41,7 +41,7 @@ class LineFinder {
 
 	  // Default accumulator resolution is 1 pixel by 1 degree
 	  // no gap, no mimimum length
-	  LineFinder() : deltaRho(1), deltaTheta(PI/180), minVote(10), minLength(0.), maxGap(0.) {}
+	  LineFinder() : deltaRho(1), deltaTheta(PI/180), minVote(1), minLength(0.), maxGap(0.) {}
 
 	  // Set the resolution of the accumulator
 	  void setAccResolution(double dRho, double dTheta) {
@@ -93,6 +93,9 @@ class LineFinder {
 	  void drawLines(cv::Mat &image, cv::Scalar color=cv::Scalar(255)) {
 	  // Draw the lines
 	      std::vector<cv::Vec4i>::const_iterator it2= leftLane.begin();
+
+	      circle(image,intersectP,20,Scalar(0,255,0),-1);
+
 	      if(leftLane.size()>0){ 
 		circle(image,intersectP,8,Scalar(0));
 		Point pt1((*it2)[0],(*it2)[1]+shift);        
@@ -173,6 +176,8 @@ class LineFinder {
     void processSide()
     {
 	std::vector<cv::Vec4i>::const_iterator it2= lines.begin();
+	leftLane.clear();
+	rightLane.clear();
 	while (it2!=lines.end()) {
 	  cv::Point pt1((*it2)[0],(*it2)[1]+shift);        
 	  cv::Point pt2((*it2)[2],(*it2)[3]+shift);
@@ -262,13 +267,13 @@ class LineFinder {
 	if(leftLane.size()>0 && rightLane.size()>0)
 	{
 	    int x1=leftLane[0][0];
-	    int y1=leftLane[0][1];
+	    int y1=leftLane[0][1]+shift;
 	    int x2=leftLane[0][2];
-	    int y2=leftLane[0][3];
+	    int y2=leftLane[0][3]+shift;
 	    int x3=rightLane[0][0];
-	    int y3=rightLane[0][1];
+	    int y3=rightLane[0][1]+shift;
 	    int x4=rightLane[0][2];
-	   int y4=rightLane[0][3];
+	   int y4=rightLane[0][3]+shift;
 	    double intersecX=(1.0*((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4)))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
 	    double intersecY=(1.0*((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4)))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
 	    intersectP.x=round(intersecX);

@@ -18,8 +18,12 @@ int main(int argc, char* argv[]) {
 	VideoCapture capture(argv[1]);
 	namedWindow("display",WINDOW_NORMAL);    
 	resizeWindow("display",640,480);
+	namedWindow("image",WINDOW_NORMAL);    
+	resizeWindow("image",640,480);
         Mat image;
  	Mat gray;
+	LineFinder ld;
+
 	while(1)
 	{
 	    capture>>image;
@@ -36,9 +40,11 @@ int main(int argc, char* argv[]) {
 
 	   // Canny algorithm
 	    Mat contours;
-	    Canny(imgROI,contours,50,250);
-	    Mat contoursInv;
-	    threshold(contours,contoursInv,128,255,THRESH_BINARY_INV);
+	    Canny(imgROI,contours,80,130);
+	    imshow("display",contours);
+	    waitKey(1);
+//	    Mat contoursInv;
+//	    threshold(contours,contoursInv,128,255,THRESH_BINARY_INV);
 	       // Display Canny image
 	   /* if(showSteps){
 		    namedWindow("Contours");
@@ -46,13 +52,12 @@ int main(int argc, char* argv[]) {
 		    imwrite("contours.bmp", contoursInv);
 	    }*/
 	       // Create LineFinder instance
-	    LineFinder ld;
 
 	       // Set probabilistic Hough parameters
-	    ld.setLineLengthAndGap(60,10);
-	    ld.setMinVote(4);
 
 	       // Detect lines
+	ld.setLineLengthAndGap(60,10);
+	ld.setMinVote(4);
 	    ld.findLines(contours);
 	    std::vector<Vec4i> li= ld.findLines(contours);
 
@@ -75,14 +80,13 @@ int main(int argc, char* argv[]) {
 //	    }
 
 	    // Set probabilistic Hough parameters
-	    ld.setLineLengthAndGap(5,2);
-	    ld.setMinVote(1);
+//	    ld.setLineLengthAndGap(5,2);
+//	    ld.setMinVote(1);
 	    ld.setShift(image.cols/3);
 	    ld.drawLines(image);
 	    
 	    if(showSteps){
-	
-    		imshow("display",image);
+    		imshow("image",image);
 		    waitKey(1);
 	    }
 //	    ld.drawDetectedLines(image);
