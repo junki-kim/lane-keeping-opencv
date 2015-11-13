@@ -3,6 +3,7 @@
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <cmath>
 #define PI 3.1415926
 using namespace std;
 using namespace cv;
@@ -91,16 +92,19 @@ class LineFinder {
 	}
 	  void drawLines(cv::Mat &image, cv::Scalar color=cv::Scalar(255)) {
 	  // Draw the lines
-	     std::vector<cv::Vec4i>::const_iterator it2= leftLane.begin();
-	     circle(image,intersectP,8,Scalar(0));
-	     Point pt1((*it2)[0],(*it2)[1]+shift);        
-	     Point pt2((*it2)[2],(*it2)[3]+shift);
-	     line( image, pt1, pt2, color, 6 );
-	     
-	     it2= rightLane.begin();
-	     Point pt3((*it2)[0],(*it2)[1]+shift);        
-	     Point pt4((*it2)[2],(*it2)[3]+shift);
-	     line( image, pt3, pt4, color, 6 );
+	      std::vector<cv::Vec4i>::const_iterator it2= leftLane.begin();
+	      if(leftLane.size()>0){ 
+		circle(image,intersectP,8,Scalar(0));
+		Point pt1((*it2)[0],(*it2)[1]+shift);        
+		Point pt2((*it2)[2],(*it2)[3]+shift);
+		line( image, pt1, pt2, color, 6 );
+	      }
+	    it2= rightLane.begin();
+	    if(rightLane.size()>0){
+	         Point pt3((*it2)[0],(*it2)[1]+shift);        
+		 Point pt4((*it2)[2],(*it2)[3]+shift);
+		 line( image, pt3, pt4, color, 6 );
+	     }
 
 	}
 	  void drawLeftLane(cv::Mat &image, cv::Scalar color=cv::Scalar(255)) {
@@ -174,10 +178,11 @@ class LineFinder {
 	  cv::Point pt2((*it2)[2],(*it2)[3]+shift);
 	  double dx=pt2.x-pt1.x;
 	  double dy=pt2.y-pt1.y;
+	  cout<<"gradient : "<<dy/dx<<endl;
 	  dx= (dx==0.0)? 1.0:dx;
-	  if((dy/dx)>0.2 && (dy/dx)<=5)
+	  if((dy/dx)>0.0)// && (dy/dx)<=10)
 	    rightLane.push_back(Vec4i((*it2)[0],(*it2)[1],(*it2)[2],(*it2)[3]));
-    	  else if((dy/dx)<-0.3 && (dy/dx)>=-4)
+    	  else if((dy/dx)<0.0)//-0.1 && (dy/dx)>=-10)
 	    leftLane.push_back(Vec4i((*it2)[0],(*it2)[1],(*it2)[2],(*it2)[3]));
 	   ++it2;
      }
@@ -206,6 +211,8 @@ class LineFinder {
 		dx=1.0*(*iter)[2]-(*iter)[0];
 		dy=1.0*(*iter)[3]-(*iter)[1];
 		dx=(dx==0)? 1.0 : dx;
+
+
 		if(gradient<(dy/dx))
 		{
 		    gradient=dy/dx;
@@ -250,18 +257,24 @@ class LineFinder {
 	return intersectP;
     }
     
-    void calcIntersectP(){
-	int x1=leftLane[0][0];
-	int y1=leftLane[0][1];
-	int x2=leftLane[0][2];
-	int y2=leftLane[0][3];
-	int x3=rightLane[0][0];
-	int y3=rightLane[0][1];
-	int x4=rightLane[0][2];
-	int y4=rightLane[0][3];
-	double intersecX=(1.0*((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4)))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
-	double intersecY=(1.0*((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4)))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
-	cout<<"intersection ("<<intersecX<<" , "<<intersecY<<")"<<endl;
+    void calcIntersectP()
+    {
+	if(leftLane.size()>0 && rightLane.size()>0)
+	{
+	    int x1=leftLane[0][0];
+	    int y1=leftLane[0][1];
+	    int x2=leftLane[0][2];
+	    int y2=leftLane[0][3];
+	    int x3=rightLane[0][0];
+	    int y3=rightLane[0][1];
+	    int x4=rightLane[0][2];
+	   int y4=rightLane[0][3];
+	    double intersecX=(1.0*((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4)))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
+	    double intersecY=(1.0*((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4)))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
+	    intersectP.x=round(intersecX);
+	    intersectP.y=round(intersecY);
+	}
+	cout<<"intersection ("<<intersectP.x<<" , "<<intersectP.y<<")"<<endl;
     }
 
 };

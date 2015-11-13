@@ -15,10 +15,9 @@ int main(int argc, char* argv[]) {
 	string arg = argv[1];
 	bool showSteps =true;
 
-	string window_name = "Processed Video";
-	namedWindow(window_name, CV_WINDOW_KEEPRATIO); //resizable window;
 	VideoCapture capture(argv[1]);
-    
+	namedWindow("display",WINDOW_NORMAL);    
+	resizeWindow("display",640,480);
         Mat image;
  	Mat gray;
 	while(1)
@@ -80,8 +79,11 @@ int main(int argc, char* argv[]) {
 	    ld.setMinVote(1);
 	    ld.setShift(image.cols/3);
 	    ld.drawLines(image);
+	    
 	    if(showSteps){
-	    imshow("image",image);
+	
+    		imshow("display",image);
+		    waitKey(1);
 	    }
 //	    ld.drawDetectedLines(image);
 	}
