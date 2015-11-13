@@ -162,10 +162,10 @@ class LineFinder {
 	  double dx=pt2.x-pt1.x;
 	  double dy=pt2.y-pt1.y;
 	  dx= (dx==0.0)? 1.0:dx;
-	  if((dy/dx)>0.0)
-	   rightLane.push_back(Vec4i((*it2)[0],(*it2)[1],(*it2)[2],(*it2)[3]));
-	  else if((dy/dx)<0.0)
-	  leftLane.push_back(Vec4i((*it2)[0],(*it2)[1],(*it2)[2],(*it2)[3]));
+	  if((dy/dx)>0.2 && (dy/dx)<=5)
+	    rightLane.push_back(Vec4i((*it2)[0],(*it2)[1],(*it2)[2],(*it2)[3]));
+    	  else if((dy/dx)<-0.3 && (dy/dx)>=-4)
+	    leftLane.push_back(Vec4i((*it2)[0],(*it2)[1],(*it2)[2],(*it2)[3]));
 	   ++it2;
      }
 	
@@ -174,54 +174,59 @@ class LineFinder {
     void laneFilter()
     {
 	std::vector<cv::Vec4i>::iterator iter=leftLane.begin();
-	int numOfLane=leftLane.size()-1;
-	int count=0;
-	double dx=1.0*(*iter)[2]-(*iter)[0];
-	double dy=1.0*(*iter)[3]-(*iter)[1];
-	dx=(dx==0)? 1.0:dx;
-	double gradient=dy/dx;
-	iter++;
-	
-	while(count<numOfLane)
-	{
-	    cout<<"gradient: "<<gradient<<endl;
-	    dx=1.0*(*iter)[2]-(*iter)[0];
-	    dy=1.0*(*iter)[3]-(*iter)[1];
-	    dx=(dx==0)? 1.0 : dx;
-	    if(gradient<(dy/dx))
+	int numOfLane=leftLane.size();
+	if(numOfLane > 0){
+	    int count=0;
+	    double dx=1.0*(*iter)[2]-(*iter)[0];
+	    double dy=1.0*(*iter)[3]-(*iter)[1];
+	    dx=(dx==0)? 1.0:dx;
+	    double gradient=dy/dx;
+	    iter++;
+	    numOfLane--;
+	    while(count<numOfLane)
 	    {
-		gradient=dy/dx;
-		leftLane.erase(iter-1);
+		cout<<"gradient: "<<gradient<<endl;
+		dx=1.0*(*iter)[2]-(*iter)[0];
+		dy=1.0*(*iter)[3]-(*iter)[1];
+		dx=(dx==0)? 1.0 : dx;
+		if(gradient<(dy/dx))
+		{
+		    gradient=dy/dx;
+		    leftLane.erase(iter-1);
+		}
+		else{
+		    leftLane.erase(iter);
+		}
+		count++;
 	    }
-	    else{
-		leftLane.erase(iter);
-	    }
-	    count++;
 	}
-	
-	iter=rightLane.begin();
-	dx=1.0*(*iter)[2]-(*iter)[0];
-	dy=1.0*(*iter)[3]-(*iter)[1];
-	dx=(dx==0)? 1.0:dx;
-	gradient=dy/dx;
-	iter++;
-	numOfLane=rightLane.size()-1;
-	count=0;
-	while(count<numOfLane)
+	numOfLane=rightLane.size();
+	if(numOfLane>0)
 	{
-	    
-	    cout<<"gradient: "<<gradient<<endl;
+	    iter=rightLane.begin();
 	    dx=1.0*(*iter)[2]-(*iter)[0];
 	    dy=1.0*(*iter)[3]-(*iter)[1];
-	    dx=(dx==0)? 1.0 : dx;
-	    if(gradient>(dy/dx))
+	    dx=(dx==0)? 1.0:dx;
+	    gradient=dy/dx;
+	    iter++;
+	    numOfLane--;
+	    count=0;
+	    while(count<numOfLane)
 	    {
-		gradient=dy/dx;
-		rightLane.erase(iter-1);
+		
+		cout<<"gradient: "<<gradient<<endl;
+		dx=1.0*(*iter)[2]-(*iter)[0];
+		dy=1.0*(*iter)[3]-(*iter)[1];
+		dx=(dx==0)? 1.0 : dx;
+		if(gradient>(dy/dx))
+		{
+		    gradient=dy/dx;
+		    rightLane.erase(iter-1);
+		}
+		else
+		    rightLane.erase(iter);
+		count++;
 	    }
-	    else
-		rightLane.erase(iter);
-	    count++;
 	}
     }
     Point getIntersectP()
