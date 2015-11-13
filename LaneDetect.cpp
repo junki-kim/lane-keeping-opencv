@@ -107,6 +107,8 @@ int main(int argc, char* argv[]) {
 	std::vector<Vec4i> li= ld.findLines(contours);
 
 	ld.processSide();
+	ld.laneFilter();
+	waitKey(0);
 	ld.calcIntersectP();
 	Mat leftLane(imgROI.size(),CV_8U,Scalar(0));
 	Mat rightLane(imgROI.size(),CV_8U,Scalar(0));
@@ -119,6 +121,8 @@ int main(int argc, char* argv[]) {
 
 	if(showSteps){
 		namedWindow("Detected Lines with HoughP");
+		imshow("leftLane", leftLane);
+		imshow("rightLane", rightLane);
 		//imshow("Detected Lines with HoughP", houghP);
 //		imwrite("houghP.bmp", houghP);
 	}

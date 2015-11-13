@@ -173,15 +173,60 @@ class LineFinder {
     /*laneFilter finds the lines which has smallest and biggest gradient on right and left lanes respectively.   */
     void laneFilter()
     {
-	std::vector<cv::Vec4i>::const_iterator left=leftLane.begin();
-	double gradient=0.0;
-	while(left!=leftLane.end())
+	std::vector<cv::Vec4i>::iterator iter=leftLane.begin();
+	double dx=1.0*(*iter)[2]-(*iter)[0];
+	double dy=1.0*(*iter)[3]-(*iter)[1];
+	dx=(dx==0)? 1.0:dx;
+	double gradient=dy/dx;
+	iter++;
+	cout<<"size : "<<leftLane.size()<<endl;
+	while(iter!=leftLane.end())
 	{
-	
+	    dx=1.0*(*iter)[2]-(*iter)[0];
+	    dy=1.0*(*iter)[3]-(*iter)[1];
+	    cout<<"("<<(*iter)[0]<<","<<(*iter)[1]<<"), ("<<(*iter)[2]<<","<<(*iter)[3]<<")"<<endl;
+	    dx=(dx==0)? 1.0 : dx;
+//	    cout<<"be current g : "<<gradient<<"<, dy/dx : "<<dy/dx<<endl;
+	    if(gradient<(dy/dx))
+	    {
+		gradient=dy/dx;
+		leftLane.erase(iter-1);
+	    }
+	    else
+		leftLane.erase(iter);
+//	    cout<<"af current g : "<<gradient<<"<, dy/dx : "<<dy/dx<<endl;
+	    iter++;	
 	}
-	
-	
-	
+//	std::vector<cv::Vec4i>::iterator iter=leftLane.begin();
+	cout<<"left line size : "<<leftLane.size()<<endl;
+	iter=rightLane.begin();
+	cout<<"size : "<<rightLane.size()<<endl;
+	dx=1.0*(*iter)[2]-(*iter)[0];
+	dy=1.0*(*iter)[3]-(*iter)[1];
+	dx=(dx==0)? 1.0:dx;
+	gradient=dy/dx;
+	iter++;
+	cin>>dx;
+	while(iter!=rightLane.end())
+	{
+	    dx=1.0*(*iter)[2]-(*iter)[0];
+	    dy=1.0*(*iter)[3]-(*iter)[1];
+	    dx=(dx==0)? 1.0 : dx;
+	    cout<<"("<<(*iter)[0]<<","<<(*iter)[1]<<"), ("<<(*iter)[2]<<","<<(*iter)[3]<<")"<<endl;
+//	    cout<<"be current g : "<<gradient<<"<, dy/dx : "<<dy/dx<<endl;
+	    if(gradient<(dy/dx))
+	    {
+		gradient=dy/dx;
+		rightLane.erase(iter-1);
+	    }
+	    else
+		rightLane.erase(iter);
+//	    cout<<"af current g : "<<gradient<<"<, dy/dx : "<<dy/dx<<endl;
+	    iter++;	
+	}
+	cout<<"left lane size: "<<leftLane.size()<<endl;
+	cout<<"right lane size: "<<rightLane.size()<<endl;
+	cin>>dx;
     }
     Point getIntersectP()
     {
