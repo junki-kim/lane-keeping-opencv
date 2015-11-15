@@ -37,27 +37,32 @@ int main(int argc, char* argv[]) {
 
 	   // Canny algorithm
 	    Mat contours;
-	    Canny(imgROI,contours,80,100);
+	    Canny(imgROI,contours,50,100);
 	    imshow("display",contours);
 	    waitKey(1);
 	       // Detect lines
 	    ld.setLineLengthAndGap(60,10);
 	    ld.setMinVote(4);
 	    ld.findLines(contours);
-	    std::vector<Vec4i> li= ld.findLines(contours);
+	    cout<<"after findlines"<<endl;
+//	    std::vector<Vec4i> li= ld.findLines(contours);
 
 	    ld.processSide();
+	    cout<<"after processSide"<<endl;
 	    ld.laneFilter();
+	    cout<<"after laneFilter"<<endl;
 	    
 	    ld.calcIntersectP();
+	    cout<<"after calcIntersectP "<<endl;
 	    //this intersection has the vanishing point
 	    //intersection has (x,y) coordinates access it like following
 	    //intersection.x
 	    //intersection.y
 	    Point intersection=ld.getIntersectP();
-
+	
 	    ld.setShift(image.cols/3);
 	    ld.drawLines(image);
+	    cout<<"After drawLines"<<endl;
 	    
 	    if(showSteps){
     		imshow("image",image);

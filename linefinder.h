@@ -94,7 +94,8 @@ class LineFinder {
 	  // Draw the lines
 	      std::vector<cv::Vec4i>::const_iterator it2= leftLane.begin();
 
-	      circle(image,intersectP,20,Scalar(0,255,0),-1);
+	      if(intersectP.x>=0 && intersectP.y>=0)
+	          circle(image,intersectP,20,Scalar(0,255,0),-1);
 
 	      if(leftLane.size()>0){ 
 		circle(image,intersectP,8,Scalar(0));
@@ -266,6 +267,7 @@ class LineFinder {
     {
 	if(leftLane.size()>0 && rightLane.size()>0)
 	{
+	    cout<<"left and right are not zero"<<endl;
 	    int x1=leftLane[0][0];
 	    int y1=leftLane[0][1]+shift;
 	    int x2=leftLane[0][2];
@@ -274,10 +276,61 @@ class LineFinder {
 	    int y3=rightLane[0][1]+shift;
 	    int x4=rightLane[0][2];
 	   int y4=rightLane[0][3]+shift;
-	    double intersecX=(1.0*((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4)))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
-	    double intersecY=(1.0*((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4)))/((x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
+	   double denominator=(1.0*(x1-x2)*(y3-y4)-(y1-y2)*(x3-x4));
+	   denominator=(denominator==0)? 1.0:denominator;
+	    double intersecX=(1.0*((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4)))/denominator;
+	    double intersecY=(1.0*((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4)))/denominator;
 	    intersectP.x=round(intersecX);
 	    intersectP.y=round(intersecY);
+	    cout<<"left and right end"<<endl;
+	}
+	else if(rightLane.size()==0 && leftLane.size()>0)
+	{
+	    cout<<"right lane zero start"<<endl;
+	    int x1=leftLane[0][0];
+	    int y1=leftLane[0][1]+shift;
+	    int x2=leftLane[0][2];
+	    int y2=leftLane[0][3]+shift;
+	    double dx=((x2-x1)==0)? 1.0:(x2-x1);
+	    
+	    cout<<"rightLane.size=0 dx = "<<dx;
+	    double k=1.0*(y2-y1)/dx;
+	    double b=1.0*y1-k*x1;
+	    k=(k==0)? 1.0:k;
+	    cout<<", k = "<<k<<endl;
+	    double targetX=(-b/k);
+	    if(targetX<0)
+		    intersectP.x=0;
+	    else if(targetX>1700)
+		intersectP.x=1700;
+	    else 
+		intersectP.x=round(targetX);
+
+	    intersectP.y=0;
+	    cout<<"right lane zero end"<<endl;
+	}
+	else if(leftLane.size()==0&& rightLane.size()>0)
+	{
+	    cout<<"left lane zero start"<<endl;
+	    int x3=rightLane[0][0];
+	    int y3=rightLane[0][1]+shift;
+	    int x4=rightLane[0][2];
+	    int y4=rightLane[0][3]+shift;
+	    double dx=((x4-x3)==0)? 1.0:(x4-x3);
+	    cout<<"leftLane.size =0 dx = "<<dx;
+	    double k=1.0*(y4-y3)/dx;
+	    double b=1.0*y3-k*x3;
+	    k=(k==0)? 1.0:k;
+	    cout<<", k = "<<k<<endl;
+	    double targetX=(-b/k);
+	    if(targetX<0)
+		    intersectP.x=0;
+	    else if(targetX>1700)
+		intersectP.x=1700;
+	    else 
+		intersectP.x=round(targetX);
+	    intersectP.y=0;
+	    cout<<"left lane zero end "<<endl;
 	}
 	cout<<"intersection ("<<intersectP.x<<" , "<<intersectP.y<<")"<<endl;
     }
