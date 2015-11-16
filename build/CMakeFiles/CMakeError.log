@@ -1,0 +1,57 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/pi/RaspiCam/lane/lane-keeping-opencv/build/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec2633687896/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec2633687896.dir/build.make CMakeFiles/cmTryCompileExec2633687896.dir/build
+make[1]: Entering directory '/home/pi/RaspiCam/lane/lane-keeping-opencv/build/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/pi/RaspiCam/lane/lane-keeping-opencv/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec2633687896.dir/CheckSymbolExists.c.o
+/usr/bin/gcc    -o CMakeFiles/cmTryCompileExec2633687896.dir/CheckSymbolExists.c.o   -c /home/pi/RaspiCam/lane/lane-keeping-opencv/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTryCompileExec2633687896
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2633687896.dir/link.txt --verbose=1
+/usr/bin/gcc         CMakeFiles/cmTryCompileExec2633687896.dir/CheckSymbolExists.c.o  -o cmTryCompileExec2633687896 -rdynamic 
+CMakeFiles/cmTryCompileExec2633687896.dir/CheckSymbolExists.c.o: In function `main':
+CheckSymbolExists.c:(.text+0x38): undefined reference to `pthread_create'
+collect2: ld returned 1 exit status
+CMakeFiles/cmTryCompileExec2633687896.dir/build.make:91: recipe for target 'cmTryCompileExec2633687896' failed
+make[1]: Leaving directory '/home/pi/RaspiCam/lane/lane-keeping-opencv/build/CMakeFiles/CMakeTmp'
+make[1]: *** [cmTryCompileExec2633687896] Error 1
+Makefile:117: recipe for target 'cmTryCompileExec2633687896/fast' failed
+make: *** [cmTryCompileExec2633687896/fast] Error 2
+
+File /home/pi/RaspiCam/lane/lane-keeping-opencv/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/pi/RaspiCam/lane/lane-keeping-opencv/build/CMakeFiles/CMakeTmp
+
+Run Build Command:/usr/bin/make "cmTryCompileExec3222368335/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec3222368335.dir/build.make CMakeFiles/cmTryCompileExec3222368335.dir/build
+make[1]: Entering directory '/home/pi/RaspiCam/lane/lane-keeping-opencv/build/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/pi/RaspiCam/lane/lane-keeping-opencv/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec3222368335.dir/CheckFunctionExists.c.o
+/usr/bin/gcc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTryCompileExec3222368335.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec3222368335
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3222368335.dir/link.txt --verbose=1
+/usr/bin/gcc     -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTryCompileExec3222368335.dir/CheckFunctionExists.c.o  -o cmTryCompileExec3222368335 -rdynamic -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: ld returned 1 exit status
+CMakeFiles/cmTryCompileExec3222368335.dir/build.make:91: recipe for target 'cmTryCompileExec3222368335' failed
+make[1]: Leaving directory '/home/pi/RaspiCam/lane/lane-keeping-opencv/build/CMakeFiles/CMakeTmp'
+make[1]: *** [cmTryCompileExec3222368335] Error 1
+Makefile:117: recipe for target 'cmTryCompileExec3222368335/fast' failed
+make: *** [cmTryCompileExec3222368335/fast] Error 2
+
+

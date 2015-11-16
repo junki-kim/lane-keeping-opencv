@@ -5,3 +5,5 @@ CMakeFiles/contours.dir/LaneDetect.cpp.o
  /home/pi/RaspiCam/lane/lane-keeping-opencv/LaneDetect.cpp
  /home/pi/RaspiCam/lane/lane-keeping-opencv/linefinder.h
  /usr/local/include/raspicam/raspicam_cv.h
+ /usr/local/include/softPwm.h
+ /usr/local/include/wiringPi.h

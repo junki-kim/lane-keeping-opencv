@@ -4,4 +4,6 @@
 CMakeFiles/contours.dir/LaneDetect.cpp.o: ../LaneDetect.cpp
 CMakeFiles/contours.dir/LaneDetect.cpp.o: ../linefinder.h
 CMakeFiles/contours.dir/LaneDetect.cpp.o: /usr/local/include/raspicam/raspicam_cv.h
+CMakeFiles/contours.dir/LaneDetect.cpp.o: /usr/local/include/softPwm.h
+CMakeFiles/contours.dir/LaneDetect.cpp.o: /usr/local/include/wiringPi.h
 

@@ -23,6 +23,14 @@ raspicam/raspicam_cv.h
 -
 linefinder.h
 /home/pi/RaspiCam/lane/lane-keeping-opencv/linefinder.h
+wiringPi.h
+-
+softPwm.h
+-
+pthread.h
+-
+unistd.h
+-
 
 /home/pi/RaspiCam/lane/lane-keeping-opencv/linefinder.h
 opencv2/core/core.hpp
@@ -37,4 +45,8 @@ opencv2/core/core.hpp
 -
 opencv2/highgui/highgui.hpp
 -
+
+/usr/local/include/softPwm.h
+
+/usr/local/include/wiringPi.h
 

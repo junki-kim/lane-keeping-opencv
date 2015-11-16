@@ -4,6 +4,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <cmath>
+#define DEBUG 0
 #define PI 3.1415926
 using namespace std;
 using namespace cv;
@@ -184,7 +185,9 @@ class LineFinder {
 	  cv::Point pt2((*it2)[2],(*it2)[3]+shift);
 	  double dx=pt2.x-pt1.x;
 	  double dy=pt2.y-pt1.y;
+#if DEBUG == 1
 	  cout<<"gradient : "<<dy/dx<<endl;
+#endif
 	  dx= (dx==0.0)? 1.0:dx;
 	  if((dy/dx)>0.3 && (dy/dx)<5)// && (dy/dx)<=10)
 	    rightLane.push_back(Vec4i((*it2)[0],(*it2)[1],(*it2)[2],(*it2)[3]));
@@ -267,7 +270,9 @@ class LineFinder {
     {
 	if(leftLane.size()>0 && rightLane.size()>0)
 	{
+#if DEBUG == 1
 	    cout<<"left and right are not zero"<<endl;
+#endif
 	    int x1=leftLane[0][0];
 	    int y1=leftLane[0][1]+shift;
 	    int x2=leftLane[0][2];
@@ -292,22 +297,29 @@ class LineFinder {
                     intersectP.y=480;
             else
         	    intersectP.y=round(intersecY);
+#if DEBUG == 1
 	    cout<<"left and right end"<<endl;
+#endif
 	}
 	else if(rightLane.size()==0 && leftLane.size()>0)
 	{
+#if DEBUG == 1
 	    cout<<"right lane zero start"<<endl;
+#endif
 	    int x1=leftLane[0][0];
 	    int y1=leftLane[0][1]+shift;
 	    int x2=leftLane[0][2];
 	    int y2=leftLane[0][3]+shift;
 	    double dx=((x2-x1)==0)? 1.0:(x2-x1);
-	    
+#if DEBUG == 1	    
 	    cout<<"rightLane.size=0 dx = "<<dx;
+#endif
 	    double k=1.0*(y2-y1)/dx;
 	    double b=1.0*y1-k*x1;
 	    k=(k==0)? 1.0:k;
+#if DEBUG == 1
 	    cout<<", k = "<<k<<endl;
+#endif
 	    double targetX=(-b/k);
 	    if(targetX<0)
 		    intersectP.x=0;
@@ -317,21 +329,29 @@ class LineFinder {
 		intersectP.x=round(targetX);
 
 	    intersectP.y=0;
+#if DEBUG == 1
 	    cout<<"right lane zero end"<<endl;
+#endif
 	}
 	else if(leftLane.size()==0 && rightLane.size()>0)
 	{
+#if DEBUG == 1
 	    cout<<"left lane zero start"<<endl;
+#endif
 	    int x3=rightLane[0][0];
 	    int y3=rightLane[0][1]+shift;
 	    int x4=rightLane[0][2];
 	    int y4=rightLane[0][3]+shift;
 	    double dx=((x4-x3)==0)? 1.0:(x4-x3);
+#if DEBUG == 1
 	    cout<<"leftLane.size =0 dx = "<<dx;
+#endif
 	    double k=1.0*(y4-y3)/dx;
 	    double b=1.0*y3-k*x3;
 	    k=(k==0)? 1.0:k;
+#if DEBUG == 1
 	    cout<<", k = "<<k<<endl;
+#endif
 	    double targetX=(-b/k);
 	    if(targetX<0)
 		    intersectP.x=0;
@@ -340,9 +360,13 @@ class LineFinder {
 	    else 
 		intersectP.x=round(targetX);
 	    intersectP.y=0;
+#if DEBUG == 1
 	    cout<<"left lane zero end "<<endl;
+#endif
 	}
+#if DEBUG == 1
 	cout<<"intersection ("<<intersectP.x<<" , "<<intersectP.y<<")"<<endl;
+#endif
     }
 
 };

@@ -117,9 +117,11 @@ contours: /usr/lib/libopencv_stitching.so
 contours: /usr/lib/libopencv_ts.so
 contours: /usr/lib/libopencv_video.so
 contours: /usr/lib/libopencv_videostab.so
+contours: /usr/local/lib/libwiringPi.so
 contours: /opt/vc/lib/libmmal_core.so
 contours: /opt/vc/lib/libmmal_util.so
 contours: /opt/vc/lib/libmmal.so
+contours: /usr/local/lib/libwiringPi.so
 contours: CMakeFiles/contours.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable contours"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/contours.dir/link.txt --verbose=$(VERBOSE)
