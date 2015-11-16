@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/pi/RaspiCam/lane/lane-keeping-opencv/LaneDetect.cpp
+opencv2/highgui/highgui.hpp
+/home/pi/RaspiCam/lane/lane-keeping-opencv/opencv2/highgui/highgui.hpp
+opencv2/objdetect/objdetect.hpp
+-
+opencv2/imgproc/imgproc.hpp
+-
+iostream
+-
+vector
+-
+stdio.h
+-
+raspicam/raspicam_cv.h
+-
+linefinder.h
+/home/pi/RaspiCam/lane/lane-keeping-opencv/linefinder.h
+
+/home/pi/RaspiCam/lane/lane-keeping-opencv/linefinder.h
+opencv2/core/core.hpp
+-
+opencv2/imgproc/imgproc.hpp
+-
+cmath
+-
+
+/usr/local/include/raspicam/raspicam_cv.h
+opencv2/core/core.hpp
+-
+opencv2/highgui/highgui.hpp
+-
+

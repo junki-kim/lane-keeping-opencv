@@ -95,7 +95,7 @@ class LineFinder {
 	      std::vector<cv::Vec4i>::const_iterator it2= leftLane.begin();
 
 	      if(intersectP.x>=0 && intersectP.y>=0)
-	          circle(image,intersectP,20,Scalar(0,255,0),-1);
+	          circle(image,intersectP,30,Scalar(255),-1);
 
 	      if(leftLane.size()>0){ 
 		circle(image,intersectP,8,Scalar(0));
@@ -186,9 +186,9 @@ class LineFinder {
 	  double dy=pt2.y-pt1.y;
 	  cout<<"gradient : "<<dy/dx<<endl;
 	  dx= (dx==0.0)? 1.0:dx;
-	  if((dy/dx)>0.0)// && (dy/dx)<=10)
+	  if((dy/dx)>0.3 && (dy/dx)<5)// && (dy/dx)<=10)
 	    rightLane.push_back(Vec4i((*it2)[0],(*it2)[1],(*it2)[2],(*it2)[3]));
-    	  else if((dy/dx)<0.0)//-0.1 && (dy/dx)>=-10)
+    	  else if((dy/dx)<-0.2 && (dy/dx)>-5)//-0.1 && (dy/dx)>=-10)
 	    leftLane.push_back(Vec4i((*it2)[0],(*it2)[1],(*it2)[2],(*it2)[3]));
 	   ++it2;
      }
@@ -280,8 +280,18 @@ class LineFinder {
 	   denominator=(denominator==0)? 1.0:denominator;
 	    double intersecX=(1.0*((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4)))/denominator;
 	    double intersecY=(1.0*((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4)))/denominator;
-	    intersectP.x=round(intersecX);
-	    intersectP.y=round(intersecY);
+            if(intersecX<0)
+                    intersectP.x=0;
+            else if(intersecX >640)
+                    intersectP.x=640;
+            else
+               	    intersectP.x=round(intersecX);
+            if(intersecY<0)
+                    intersectP.y=0;
+            else if(intersecY>480)
+                    intersectP.y=480;
+            else
+        	    intersectP.y=round(intersecY);
 	    cout<<"left and right end"<<endl;
 	}
 	else if(rightLane.size()==0 && leftLane.size()>0)
@@ -301,15 +311,15 @@ class LineFinder {
 	    double targetX=(-b/k);
 	    if(targetX<0)
 		    intersectP.x=0;
-	    else if(targetX>1700)
-		intersectP.x=1700;
+	    else if(targetX>640)
+		intersectP.x=640;
 	    else 
 		intersectP.x=round(targetX);
 
 	    intersectP.y=0;
 	    cout<<"right lane zero end"<<endl;
 	}
-	else if(leftLane.size()==0&& rightLane.size()>0)
+	else if(leftLane.size()==0 && rightLane.size()>0)
 	{
 	    cout<<"left lane zero start"<<endl;
 	    int x3=rightLane[0][0];
@@ -325,8 +335,8 @@ class LineFinder {
 	    double targetX=(-b/k);
 	    if(targetX<0)
 		    intersectP.x=0;
-	    else if(targetX>1700)
-		intersectP.x=1700;
+	    else if(targetX>640)
+		intersectP.x=640;
 	    else 
 		intersectP.x=round(targetX);
 	    intersectP.y=0;

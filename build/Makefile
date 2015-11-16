@@ -45,7 +45,7 @@ CMAKE_EDIT_COMMAND = /usr/bin/ccmake
 CMAKE_SOURCE_DIR = /home/pi/RaspiCam/lane/lane-keeping-opencv
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/pi/RaspiCam/lane/lane-keeping-opencv
+CMAKE_BINARY_DIR = /home/pi/RaspiCam/lane/lane-keeping-opencv/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -72,9 +72,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/RaspiCam/lane/lane-keeping-opencv/CMakeFiles /home/pi/RaspiCam/lane/lane-keeping-opencv/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/RaspiCam/lane/lane-keeping-opencv/build/CMakeFiles /home/pi/RaspiCam/lane/lane-keeping-opencv/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/RaspiCam/lane/lane-keeping-opencv/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/RaspiCam/lane/lane-keeping-opencv/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
