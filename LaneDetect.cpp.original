@@ -42,7 +42,7 @@ void *t_func(void *data)
 //int speedLeft = 0;
 //	int speedRight = 0;
 
-#define NORMAL 75
+#define NORMAL 70
 #define TURN_HIGH 75
 #define TURN_LOW 55 
 #define STD_X 320
@@ -97,9 +97,9 @@ void *t_func(void *data)
 				softPwmWrite(RIGHT, 0);
 				delay(del);
 
-				rightCorrection += 0.25;
+				rightCorrection += 0.3;
 			}
-			else if((x>=STD_X +(3*OFFSET)) && ( x < 600)) // level 2 right turn
+			else if((x>=STD_X +(3*OFFSET)) && ( x < 555)) // level 2 right turn
 			{
 				softPwmWrite(LEFT, TURN_HIGH + 8);
 				softPwmWrite(RIGHT, TURN_LOW);
@@ -110,21 +110,21 @@ void *t_func(void *data)
 				softPwmWrite(RIGHT, 0);
 				delay(del);
 
-				rightCorrection += 0.35;
+				rightCorrection += 0.5;
 				
 			}
-			else if( (x >=600 ) && ( x <=640) ) // level 3 right turn
+			else if( (x >=555 ) && ( x <=640) ) // level 3 right turn
 			{
-				softPwmWrite(LEFT, TURN_HIGH + 20);
-				softPwmWrite(RIGHT, TURN_LOW + 5);
+				softPwmWrite(LEFT, TURN_HIGH + 12);
+				softPwmWrite(RIGHT, TURN_LOW);
 				softPwmWrite(GND1,0);
 				softPwmWrite(GND2,0);
-				delay(speed/2);
+				delay(speed);
 				softPwmWrite(LEFT, 0);
 				softPwmWrite(RIGHT, 0);
 				delay(del);
 
-				rightCorrection += 0.8;
+				rightCorrection += 1;
 				
 			}
 			else if((x < (STD_X - OFFSET)) && (x>(STD_X -(3*OFFSET)))) // level 1 left turn
@@ -138,10 +138,10 @@ void *t_func(void *data)
 				softPwmWrite(RIGHT, 0);
 				delay(del);
 
-				leftCorrection += 0.25;
+				leftCorrection += 0.3;
 
 			}
-			else if((x<=(STD_X-(3*OFFSET))) && (x>=40)) // level 2 left turn
+			else if((x<(STD_X-(3*OFFSET))) && (x>=85)) // level 2 left turn
 			{
 				cout<<"left"<<endl;
 				softPwmWrite(LEFT, TURN_LOW);
@@ -153,21 +153,21 @@ void *t_func(void *data)
 				softPwmWrite(RIGHT, 0);
 				delay(del);
 
-				leftCorrection += 0.35;
+				leftCorrection += 0.5;
 			}
-			else if( (x<=40) && (x>=0) ) // level 3 left turn
+			else if( (x<=85) && (x>=0) ) // level 3 left turn
 			{
 				cout<<"left"<<endl;
-				softPwmWrite(LEFT, TURN_LOW + 5);
-				softPwmWrite(RIGHT, TURN_HIGH + 20);
+				softPwmWrite(LEFT, TURN_LOW);
+				softPwmWrite(RIGHT, TURN_HIGH + 12);
 				softPwmWrite(GND1,0);
 				softPwmWrite(GND2,0);
-				delay(speed/2);
+				delay(speed);
 				softPwmWrite(LEFT, 0);
 				softPwmWrite(RIGHT, 0);
 				delay(del);
 
-				leftCorrection += 0.8;
+				leftCorrection += 1;
 			}
 			/*
 			cc = (x-320) / 320.0;
@@ -237,8 +237,8 @@ int main(int argc, char* argv[]) {
 	//Open camera
 	if (!Camera.open()) {cerr<<"Error opening the camera"<<endl;return -1;}
 
-//	namedWindow("image",WINDOW_NORMAL);    
-//	resizeWindow("image",640,480);
+	namedWindow("image",WINDOW_NORMAL);    
+	resizeWindow("image",640,480);
 	Mat image;
 	Mat gray;
 	LineFinder ld;
@@ -251,7 +251,7 @@ int main(int argc, char* argv[]) {
 		if(image.empty())
 			break;
 		//                cvtColor(image,gray,CV_RGB2GRAY);
-		Rect roi(0,(image.rows*2)/3,image.cols-1,image.rows/3-1);// set the ROI for the image
+		Rect roi(0,(image.rows)/2,image.cols-1,image.rows/2);// set the ROI for the image
 		Mat imgROI;//
 		GaussianBlur(image(roi),imgROI,Size(3,3),0);
 		// Display the image
@@ -259,8 +259,8 @@ int main(int argc, char* argv[]) {
 		// Canny algorithm
 		Mat contours;
 		Canny(imgROI,contours,75,140);
-		imshow("display",contours);
-		waitKey(1);
+		//imshow("display",contours);
+		//waitKey(1);
 		// Detect lines
 		ld.setLineLengthAndGap(60,10);
 		ld.setMinVote(4);
@@ -298,7 +298,7 @@ int main(int argc, char* argv[]) {
 		y=getAVG(bufferY,1);//+bufferY[3]+bufferY[4])/5;    //(y+intersection.y)/count;
 		//		pthread_mutex_unlock(&a_mutex);
 
-		ld.setShift((image.rows*2)/3);
+		ld.setShift((image.rows)/2);
 		ld.drawLines(image);
 		line(image, Point(320-OFFSET,0),Point(320-OFFSET,480),Scalar(255),3);
 		line(image, Point(320+OFFSET,0),Point(320+OFFSET,480),Scalar(255),3);

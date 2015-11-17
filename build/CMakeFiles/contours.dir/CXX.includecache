@@ -31,6 +31,8 @@ pthread.h
 -
 unistd.h
 -
+stdlib.h
+-
 
 /home/pi/RaspiCam/lane/lane-keeping-opencv/linefinder.h
 opencv2/core/core.hpp

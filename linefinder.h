@@ -97,7 +97,7 @@ class LineFinder {
 
 	      if(intersectP.x>=0 && intersectP.y>=0)
 	          circle(image,intersectP,30,Scalar(255),-1);
-
+/*
 	      if(leftLane.size()>0){ 
 		circle(image,intersectP,8,Scalar(0));
 		Point pt1((*it2)[0],(*it2)[1]+shift);        
@@ -110,7 +110,7 @@ class LineFinder {
 		 Point pt4((*it2)[2],(*it2)[3]+shift);
 		 line( image, pt3, pt4, color, 6 );
 	     }
-
+*/
 	}
 	  void drawLeftLane(cv::Mat &image, cv::Scalar color=cv::Scalar(255)) {
 		
@@ -189,9 +189,9 @@ class LineFinder {
 	  cout<<"gradient : "<<dy/dx<<endl;
 #endif
 	  dx= (dx==0.0)? 1.0:dx;
-	  if((dy/dx)>0.3 && (dy/dx)<5)// && (dy/dx)<=10)
+	  if((dy/dx)>0.3 && (dy/dx)<5 && pt2.x > 320)// && (dy/dx)<=10)
 	    rightLane.push_back(Vec4i((*it2)[0],(*it2)[1],(*it2)[2],(*it2)[3]));
-    	  else if((dy/dx)<-0.2 && (dy/dx)>-5)//-0.1 && (dy/dx)>=-10)
+    	  else if((dy/dx)<-0.2 && (dy/dx)>-5 && pt2.x < 320 )//-0.1 && (dy/dx)>=-10)
 	    leftLane.push_back(Vec4i((*it2)[0],(*it2)[1],(*it2)[2],(*it2)[3]));
 	   ++it2;
      }
